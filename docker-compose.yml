@@ -1,0 +1,12 @@
+version: "2.1"
+services:
+  doly-ros2:
+    image: "mcfurry/doly-ros-rolling:latest"
+    privileged: true
+    tty: true
+    network_mode: host
+    ipc: host
+    tmpfs:
+      - /tmp
+    environment:
+      RMW_IMPLEMENTATION: rmw_zenoh_cpp
