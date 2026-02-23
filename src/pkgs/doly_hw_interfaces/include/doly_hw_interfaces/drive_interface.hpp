@@ -42,7 +42,7 @@ private:
 
   void onDriveStateChange(DriveType driveType, DriveState state)
   {
-    logger_.info("Drive state type={} state={}", (int)driveType, (int)state);
+    logger_.debug("Drive state type={} state={}", (int)driveType, (int)state);
   }
 
   void cmdVelCallback(const geometry_msgs::msg::TwistStamped::SharedPtr msg);

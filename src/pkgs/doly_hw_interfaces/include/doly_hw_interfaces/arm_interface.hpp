@@ -38,7 +38,7 @@ private:
 
   void onDriveStateChange(ArmSide side, ArmState state)
   {
-    logger_.info("Arm state side={} state={}", (int)side, (int)state);
+    logger_.debug("Arm state side={} state={}", (int)side, (int)state);
   }
 
   void stateTimerCb();

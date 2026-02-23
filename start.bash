@@ -2,7 +2,7 @@
 
 source /opt/dolly/rolling/setup.bash
 
-if [ "$RMW_IMPLEMENTATION" != "rmw_zenoh_cpp" ]; then
+if [ "$RMW_IMPLEMENTATION" == "rmw_zenoh_cpp" ]; then
     unset ROS_AUTOMATIC_DISCOVERY_RANGE
     # Start a zenohd in the background
     ros2 run rmw_zenoh_cpp rmw_zenohd &
