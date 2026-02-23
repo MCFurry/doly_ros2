@@ -7,7 +7,7 @@ build:
     - "-DCMAKE_EXE_LINKER_FLAGS=-Wl,--compress-debug-sections=zlib"
     - "-DCMAKE_SHARED_LINKER_FLAGS=-Wl,--compress-debug-sections=zlib"
     - "--no-warn-unused-cli"
-  merge-install: true
+  symlink-install: true
   packages-up-to: &packages-up-to
     - doly_hw_interfaces
 list:

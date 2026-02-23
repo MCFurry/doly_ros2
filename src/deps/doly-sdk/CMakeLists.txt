@@ -28,8 +28,15 @@ target_include_directories(doly_sdk INTERFACE
   $<INSTALL_INTERFACE:include>
 )
 
-# Find all .so files in the lib directory
-file(GLOB VENDOR_LIBRARIES "${CMAKE_CURRENT_SOURCE_DIR}/lib/*.so")
+# Find all shared libraries in the lib directory
+file(GLOB VENDOR_LIBRARIES "${CMAKE_CURRENT_SOURCE_DIR}/lib/*.so*")
+
+set(VENDOR_LIBRARY_NAMES)
+foreach(vendor_library ${VENDOR_LIBRARIES})
+  get_filename_component(vendor_library_filename "${vendor_library}" NAME)
+  string(REGEX REPLACE "^lib(.*)\\.so(\\..*)?$" "\\1" vendor_library_name "${vendor_library_filename}")
+  list(APPEND VENDOR_LIBRARY_NAMES "${vendor_library_name}")
+endforeach()
 
 # Set link directories and libraries for build and install
 target_link_directories(doly_sdk INTERFACE
@@ -39,7 +46,7 @@ target_link_directories(doly_sdk INTERFACE
 
 target_link_libraries(doly_sdk INTERFACE
   $<BUILD_INTERFACE:${VENDOR_LIBRARIES}>
-  $<INSTALL_INTERFACE:${VENDOR_LIBRARIES}>
+  $<INSTALL_INTERFACE:${VENDOR_LIBRARY_NAMES}>
 )
 
 # Install headers
