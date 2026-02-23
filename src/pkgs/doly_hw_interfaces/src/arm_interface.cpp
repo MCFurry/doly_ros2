@@ -10,8 +10,8 @@ ArmInterface * ArmInterface::instance_ = nullptr;
 ArmInterface::ArmInterface(const rclcpp::NodeOptions & options)
 : rclcpp::Node("arm_interface", options),
   logger_(this->get_logger()),
-  left_arm_state_publisher_(this->create_publisher<std_msgs::msg::UInt16>("left_arm_state", 1)),
-  right_arm_state_publisher_(this->create_publisher<std_msgs::msg::UInt16>("right_arm_state", 1)),
+  left_arm_state_publisher_(this->create_publisher<std_msgs::msg::Float32>("left_arm_state", 1)),
+  right_arm_state_publisher_(this->create_publisher<std_msgs::msg::Float32>("right_arm_state", 1)),
   state_pub_timer_{create_timer(
     std::chrono::duration<double>{1.0 / this->declare_parameter("freq", 10.0)},
     [this] { stateTimerCb(); })}
@@ -48,30 +48,30 @@ ArmInterface::ArmInterface(const rclcpp::NodeOptions & options)
   }
 
   arm_max_angle_ = ArmControl::getMaxAngle();
-  logger_.info("Arm max angle: {}", arm_max_angle_);
+  logger_.info("Arm max angle: {} rad", arm_max_angle_ * DEG2RADS);
 
   // Subscribers
-  left_arm_subscriber_ = this->create_subscription<std_msgs::msg::UInt16>(
-    "left_arm_angle", 1, [this](const std_msgs::msg::UInt16::SharedPtr msg) {
-      uint16_t angle = std::min(msg->data, arm_max_angle_);
+  left_arm_subscriber_ = this->create_subscription<std_msgs::msg::Float32>(
+    "left_arm_angle", 1, [this](const std_msgs::msg::Float32::SharedPtr msg) {
+      uint16_t angle = std::min(static_cast<uint16_t>(msg->data / DEG2RADS), arm_max_angle_);
       ArmControl::setAngle(0, ArmSide::LEFT, 100, angle, false);
     });
-  right_arm_subscriber_ = this->create_subscription<std_msgs::msg::UInt16>(
-    "right_arm_angle", 1, [this](const std_msgs::msg::UInt16::SharedPtr msg) {
-      uint16_t angle = std::min(msg->data, arm_max_angle_);
+  right_arm_subscriber_ = this->create_subscription<std_msgs::msg::Float32>(
+    "right_arm_angle", 1, [this](const std_msgs::msg::Float32::SharedPtr msg) {
+      uint16_t angle = std::min(static_cast<uint16_t>(msg->data / DEG2RADS), arm_max_angle_);
       ArmControl::setAngle(0, ArmSide::RIGHT, 100, angle, false);
     });
 }
 
 void ArmInterface::stateTimerCb()
 {
-  std_msgs::msg::UInt16 left_state_msg;
-  std_msgs::msg::UInt16 right_state_msg;
+  std_msgs::msg::Float32 left_state_msg;
+  std_msgs::msg::Float32 right_state_msg;
 
   std::vector<ArmData> angles = ArmControl::getCurrentAngle(ArmSide::BOTH);
 
-  left_state_msg.data = angles[0].side == ArmSide::LEFT ? angles[0].angle : angles[1].angle;
-  right_state_msg.data = angles[0].side == ArmSide::RIGHT ? angles[0].angle : angles[1].angle;
+  left_state_msg.data = angles[0].side == ArmSide::LEFT ? angles[0].angle * DEG2RADS : angles[1].angle * DEG2RADS;
+  right_state_msg.data = angles[0].side == ArmSide::RIGHT ? angles[0].angle * DEG2RADS : angles[1].angle * DEG2RADS;
 
   left_arm_state_publisher_->publish(left_state_msg);
   right_arm_state_publisher_->publish(right_state_msg);

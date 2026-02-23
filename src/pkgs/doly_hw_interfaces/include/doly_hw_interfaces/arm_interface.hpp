@@ -6,10 +6,12 @@
 #include <cstdint>
 #include <rclcpp/rclcpp.hpp>
 #include <ros2_fmt_logger/ros2_fmt_logger.hpp>
-#include <std_msgs/msg/u_int16.hpp>
+#include <std_msgs/msg/float32.hpp>
 
 namespace arm_interface
 {
+
+constexpr float DEG2RADS = 0.0174533f;
 
 class ArmInterface : public rclcpp::Node
 {
@@ -43,20 +45,20 @@ private:
 
   void stateTimerCb();
 
-  // Singleton instance for static callbacks
-  static ArmInterface * instance_;
+  ros2_fmt_logger::Logger logger_;
 
-  rclcpp::Subscription<std_msgs::msg::UInt16>::SharedPtr left_arm_subscriber_;
-  rclcpp::Subscription<std_msgs::msg::UInt16>::SharedPtr right_arm_subscriber_;
+  rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr left_arm_subscriber_;
+  rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr right_arm_subscriber_;
 
-  rclcpp::Publisher<std_msgs::msg::UInt16>::SharedPtr left_arm_state_publisher_;
-  rclcpp::Publisher<std_msgs::msg::UInt16>::SharedPtr right_arm_state_publisher_;
+  rclcpp::Publisher<std_msgs::msg::Float32>::SharedPtr left_arm_state_publisher_;
+  rclcpp::Publisher<std_msgs::msg::Float32>::SharedPtr right_arm_state_publisher_;
 
   rclcpp::TimerBase::SharedPtr state_pub_timer_;
 
   uint16_t arm_max_angle_ = 0;
 
-  ros2_fmt_logger::Logger logger_;
+  // Singleton instance for static callbacks
+  static ArmInterface * instance_;
 };
 
 }  // namespace arm_interface

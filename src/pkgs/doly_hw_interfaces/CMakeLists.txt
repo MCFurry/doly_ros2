@@ -12,15 +12,14 @@ find_package(doly_sdk REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(ros2_fmt_logger REQUIRED)
 find_package(spdlog REQUIRED)
+find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(tf2 REQUIRED)
 find_package(fmt REQUIRED)
 
 include_directories(
   include
 )
-
-# Glob all .so files in the doly_sdk lib directory (after install)
-file(GLOB DOLY_SDK_LIBS "${CMAKE_INSTALL_PREFIX}/lib/lib*.so")
 
 # Drive interface node
 add_executable(drive_interface_node src/drive_interface.cpp)
@@ -31,7 +30,6 @@ target_link_libraries(drive_interface_node
   ${geometry_msgs_TARGETS}
   rclcpp::rclcpp
   doly_sdk::doly_sdk
-  ${DOLY_SDK_LIBS}
   ros2_fmt_logger::ros2_fmt_logger
   fmt::fmt
   spdlog::spdlog
@@ -46,15 +44,30 @@ target_link_libraries(arm_interface_node
   ${std_msgs_TARGETS}
   rclcpp::rclcpp
   doly_sdk::doly_sdk
-  ${DOLY_SDK_LIBS}
   ros2_fmt_logger::ros2_fmt_logger
   fmt::fmt
   spdlog::spdlog
 )
 
+# Imu interface node
+add_executable(imu_interface_node src/imu_interface.cpp)
+target_include_directories(imu_interface_node PRIVATE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
+target_link_libraries(imu_interface_node
+  ${sensor_msgs_TARGETS}
+  rclcpp::rclcpp
+  doly_sdk::doly_sdk
+  ros2_fmt_logger::ros2_fmt_logger
+  fmt::fmt
+  spdlog::spdlog
+  tf2::tf2
+)
+
 install(TARGETS
   drive_interface_node
   arm_interface_node
+  imu_interface_node
   DESTINATION lib/${PROJECT_NAME}
 )
 

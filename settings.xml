@@ -1,0 +1,14 @@
+<Settings>
+    <Log Level="2"/>
+    <Eye Style="COLOR_LIME" Shape="0" BgShape="0" BgStyle="COLOR_WHITE"/>
+    <Lcd Brightness="1"/>
+    <Sound Volume="30" WuwId="0" Wuw="500" Cmd="500"/>
+    <Units Unit="1"/>
+    <Language Type="7" VoiceId="0"/>
+    <Hand RightHanded="true" LedColor="0"/>
+    <Clock Color="1" Background="0" Zone="Europe/Amsterdam" Font="/.doly/fonts/DS-Digital.ttf" Size="180" T24h="true"/>
+    <Servo_0 Angle="240" MaxUs="2500" MinUs="500" Invert="false" FbMin="160" FbLength="580"/>
+    <Servo_1 Angle="240" MaxUs="2500" MinUs="500" Invert="false" FbMin="160" FbLength="580"/>
+    <Offset Gx="-71" Gy="-248" Gz="-291" Ax="-11" Ay="-30" Az="12" TOFL="-9" TOFR="-12"/>
+    <ArmServo FbMinL="908" FbMinR="157" Fb180L="605" Fb180R="588" PwmDevL="16" PwmDevR="20" FixLeft="0" FixRight="0" Dev90L="0.03888889" Dev90R="0.083333336" Dev180L="-0.022222223" Dev180R="0"/>
+</Settings>

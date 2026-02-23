@@ -47,12 +47,12 @@ private:
 
   void cmdVelCallback(const geometry_msgs::msg::TwistStamped::SharedPtr msg);
 
-  // Singleton instance for static callbacks
-  static DriveInterface * instance_;
-
   rclcpp::Subscription<geometry_msgs::msg::TwistStamped>::SharedPtr cmd_vel_subscriber_;
 
   ros2_fmt_logger::Logger logger_;
+
+  // Singleton instance for static callbacks
+  static DriveInterface * instance_;
 };
 
 void twistToWheels(
