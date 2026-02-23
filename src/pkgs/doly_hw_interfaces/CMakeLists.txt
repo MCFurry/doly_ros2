@@ -19,6 +19,9 @@ include_directories(
   include
 )
 
+# Glob all .so files in the doly_sdk lib directory (after install)
+file(GLOB DOLY_SDK_LIBS "${CMAKE_INSTALL_PREFIX}/lib/lib*.so")
+
 # Drive interface node
 add_executable(drive_interface_node src/drive_interface.cpp)
 target_include_directories(drive_interface_node PRIVATE
@@ -28,6 +31,7 @@ target_link_libraries(drive_interface_node
   ${geometry_msgs_TARGETS}
   rclcpp::rclcpp
   doly_sdk::doly_sdk
+  ${DOLY_SDK_LIBS}
   ros2_fmt_logger::ros2_fmt_logger
   fmt::fmt
   spdlog::spdlog
@@ -42,6 +46,7 @@ target_link_libraries(arm_interface_node
   ${std_msgs_TARGETS}
   rclcpp::rclcpp
   doly_sdk::doly_sdk
+  ${DOLY_SDK_LIBS}
   ros2_fmt_logger::ros2_fmt_logger
   fmt::fmt
   spdlog::spdlog

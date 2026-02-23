@@ -2,9 +2,11 @@
 
 A Dockerized ROS2 interface for the [Doly robot](https://www.doly.ai/), built with the [C++ Doly SDK](https://github.com/robotdoly/DOLY-DIY/tree/main/SDK).
 
+Docker: https://hub.docker.com/r/mcfurry/doly-ros-rolling
+
 ## Overview
 
-This repository provides a ROS2 wrapper around the Doly SDK, enabling seamless integration of Doly robot into ROS2-based robotic systems. The Docker setup ensures minimal changes are needed on the OS of DOly itself.
+This repository provides a ROS2 wrapper around the Doly SDK, enabling seamless integration of Doly robot into ROS2-based robotic systems. The Docker setup ensures minimal changes are needed on the OS of Doly itself.
 
 ## Features
 
