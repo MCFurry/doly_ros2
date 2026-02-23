@@ -1,11 +1,11 @@
-#include "drive_interface/drive_interface.hpp"
+#include "doly_hw_interfaces/drive_interface.hpp"
 
 #include <chrono>
 #include <thread>
 
 namespace drive_interface
 {
-DriveInterface* DriveInterface::instance_ = nullptr;
+DriveInterface * DriveInterface::instance_ = nullptr;
 
 DriveInterface::DriveInterface(const rclcpp::NodeOptions & options)
 : rclcpp::Node("drive_interface", options), logger_(this->get_logger())
@@ -65,7 +65,8 @@ int main(int argc, char ** argv)
   // Cleanup
   DriveControl::dispose(true);  // dispose IMU as well
   DriveEvent::RemoveListenerOnError(&drive_interface::DriveInterface::onDriveErrorStatic);
-  DriveEvent::RemoveListenerOnStateChange(&drive_interface::DriveInterface::onDriveStateChangeStatic);
+  DriveEvent::RemoveListenerOnStateChange(
+    &drive_interface::DriveInterface::onDriveStateChangeStatic);
 
   return EXIT_SUCCESS;
 }

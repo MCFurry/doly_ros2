@@ -9,6 +9,6 @@ build:
     - "--no-warn-unused-cli"
   merge-install: true
   packages-up-to: &packages-up-to
-    - drive_interface
+    - doly_hw_interfaces
 list:
   packages-up-to: *packages-up-to

@@ -1,13 +1,13 @@
 #pragma once
-#include <cstdint>
-#include <geometry_msgs/msg/twist_stamped.hpp>
-#include <ros2_fmt_logger/ros2_fmt_logger.hpp>
-#include <rclcpp/rclcpp.hpp>
-
 #include <DriveControl.h>
 #include <DriveEvent.h>
 #include <DriveEventListener.h>
 #include <Helper.h>
+
+#include <cstdint>
+#include <geometry_msgs/msg/twist_stamped.hpp>
+#include <rclcpp/rclcpp.hpp>
+#include <ros2_fmt_logger/ros2_fmt_logger.hpp>
 
 constexpr double WHEEL_SEPARATION = 0.085;  // Distance between the wheels in meters
 constexpr double MAX_WHEEL_SPEED = 0.1;     // Maximum wheel speed [m/s]
@@ -48,7 +48,7 @@ private:
   void cmdVelCallback(const geometry_msgs::msg::TwistStamped::SharedPtr msg);
 
   // Singleton instance for static callbacks
-  static DriveInterface* instance_;
+  static DriveInterface * instance_;
 
   rclcpp::Subscription<geometry_msgs::msg::TwistStamped>::SharedPtr cmd_vel_subscriber_;
 

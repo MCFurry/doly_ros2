@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="doly_hw_interfaces" exec="drive_interface_node" name="drive_interface_node" output="screen"/>
+
+    <node pkg="doly_hw_interfaces" exec="arm_interface_node" name="arm_interface_node" output="screen"/>
+</launch>
