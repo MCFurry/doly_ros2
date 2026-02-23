@@ -70,8 +70,10 @@ void ArmInterface::stateTimerCb()
 
   std::vector<ArmData> angles = ArmControl::getCurrentAngle(ArmSide::BOTH);
 
-  left_state_msg.data = angles[0].side == ArmSide::LEFT ? angles[0].angle * DEG2RADS : angles[1].angle * DEG2RADS;
-  right_state_msg.data = angles[0].side == ArmSide::RIGHT ? angles[0].angle * DEG2RADS : angles[1].angle * DEG2RADS;
+  left_state_msg.data =
+    angles[0].side == ArmSide::LEFT ? angles[0].angle * DEG2RADS : angles[1].angle * DEG2RADS;
+  right_state_msg.data =
+    angles[0].side == ArmSide::RIGHT ? angles[0].angle * DEG2RADS : angles[1].angle * DEG2RADS;
 
   left_arm_state_publisher_->publish(left_state_msg);
   right_arm_state_publisher_->publish(right_state_msg);

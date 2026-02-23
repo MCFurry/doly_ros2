@@ -40,19 +40,17 @@ ImuInterface::ImuInterface(const rclcpp::NodeOptions & options)
   // Get pre defined IMU offsets
   int16_t gx, gy, gz, ax, ay, az;
   res = Helper::getImuOffsets(gx, gy, gz, ax, ay, az);
-  if (res < 0)
-  {
-      logger_.error("Get IMU offsets failed with code: {}", res);
-      return;
+  if (res < 0) {
+    logger_.error("Get IMU offsets failed with code: {}", res);
+    return;
   }
 
   // Initialize IMU Control with offsets
-	// delay 1 second before processing events
-	if (ImuControl::init(1, gx, gy, gz, ax, ay, az) < 0)
-	{
-		logger_.error("ImuControl init failed");
-		return;
-	}
+  // delay 1 second before processing events
+  if (ImuControl::init(1, gx, gy, gz, ax, ay, az) < 0) {
+    logger_.error("ImuControl init failed");
+    return;
+  }
 
   // get ImuControl version
   logger_.info("ImuControl Version:{:.3f}", ImuControl::getVersion());
@@ -62,13 +60,10 @@ ImuInterface::ImuInterface(const rclcpp::NodeOptions & options)
 
   // Register event listeners
   ImuEvent::AddListenerUpdateEvent(&ImuInterface::onImuUpdateStatic);
-	ImuEvent::AddListenerGestureEvent(&ImuInterface::onImuGestureStatic);
+  ImuEvent::AddListenerGestureEvent(&ImuInterface::onImuGestureStatic);
 }
 
-void ImuInterface::stateTimerCb()
-{
-  imu_publisher_->publish(current_imu_data_);
-}
+void ImuInterface::stateTimerCb() { imu_publisher_->publish(current_imu_data_); }
 
 }  // namespace imu_interface
 
@@ -85,8 +80,8 @@ int main(int argc, char ** argv)
 
   // Cleanup
   ImuEvent::RemoveListenerUpdateEvent(&imu_interface::ImuInterface::onImuUpdateStatic);
-	ImuEvent::RemoveListenerGestureEvent(&imu_interface::ImuInterface::onImuGestureStatic);
-	ImuControl::dispose();
+  ImuEvent::RemoveListenerGestureEvent(&imu_interface::ImuInterface::onImuGestureStatic);
+  ImuControl::dispose();
 
   return EXIT_SUCCESS;
 }

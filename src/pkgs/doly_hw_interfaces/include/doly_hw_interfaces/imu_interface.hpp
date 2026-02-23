@@ -1,5 +1,4 @@
 #pragma once
-#include "ImuControl.h"
 #include <Helper.h>
 
 #include <cstdint>
@@ -7,6 +6,8 @@
 #include <ros2_fmt_logger/ros2_fmt_logger.hpp>
 #include <sensor_msgs/msg/imu.hpp>
 #include <tf2/LinearMath/Quaternion.hpp>
+
+#include "ImuControl.h"
 
 namespace imu_interface
 {
@@ -35,9 +36,12 @@ public:
 private:
   void onImuUpdate(ImuData data)
   {
-    logger_.debug("IMU Update - Yaw: {:.2f}, Pitch: {:.2f}, Roll: {:.2f}", data.ypr.yaw, data.ypr.pitch, data.ypr.roll);
+    logger_.debug(
+      "IMU Update - Yaw: {:.2f}, Pitch: {:.2f}, Roll: {:.2f}", data.ypr.yaw, data.ypr.pitch,
+      data.ypr.roll);
     tf2::Quaternion explicit_quat;
-    explicit_quat.setRPY(data.ypr.roll * DEG2RADS, data.ypr.pitch * DEG2RADS, data.ypr.yaw * DEG2RADS);
+    explicit_quat.setRPY(
+      data.ypr.roll * DEG2RADS, data.ypr.pitch * DEG2RADS, data.ypr.yaw * DEG2RADS);
     current_imu_data_.header.stamp = this->get_clock()->now();
     current_imu_data_.orientation.x = explicit_quat.x();
     current_imu_data_.orientation.y = explicit_quat.y();
@@ -51,7 +55,9 @@ private:
 
   void onImuGesture(ImuGesture type, GestureDirection from)
   {
-    logger_.debug("IMU Gesture - Type: {}, Direction: {}", ImuEvent::getGestureStr(type), ImuEvent::getDirectionStr(from));
+    logger_.debug(
+      "IMU Gesture - Type: {}, Direction: {}", ImuEvent::getGestureStr(type),
+      ImuEvent::getDirectionStr(from));
   }
 
   void stateTimerCb();
