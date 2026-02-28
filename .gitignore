@@ -6,5 +6,6 @@ __pycache__
 .vscode
 
 # Ignore lib and include folders in src/deps/doly-sdk since they are downloaded build time
+src/deps/doly-sdk/examples/
 src/deps/doly-sdk/lib/
 src/deps/doly-sdk/include/
