@@ -92,12 +92,27 @@ target_link_libraries(tof_interface_node
   spdlog::spdlog
 )
 
+# Edge interface node
+add_executable(edge_interface_node src/edge_interface.cpp)
+target_include_directories(edge_interface_node PRIVATE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
+target_link_libraries(edge_interface_node
+  ${std_msgs_TARGETS}
+  rclcpp::rclcpp
+  doly_sdk::doly_sdk
+  ros2_fmt_logger::ros2_fmt_logger
+  fmt::fmt
+  spdlog::spdlog
+)
+
 install(TARGETS
   drive_interface_node
   arm_interface_node
   imu_interface_node
   led_interface_node
   tof_interface_node
+  edge_interface_node
   DESTINATION lib/${PROJECT_NAME}
 )
 

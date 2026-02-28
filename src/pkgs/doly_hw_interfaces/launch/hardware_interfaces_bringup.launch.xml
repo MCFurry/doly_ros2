@@ -3,7 +3,11 @@
 
     <node pkg="doly_hw_interfaces" exec="arm_interface_node" name="arm_interface_node" output="screen"/>
 
+    <node pkg="doly_hw_interfaces" exec="imu_interface_node" name="imu_interface_node" output="screen"/>
+
     <node pkg="doly_hw_interfaces" exec="led_interface_node" name="led_interface_node" output="screen"/>
 
     <node pkg="doly_hw_interfaces" exec="tof_interface_node" name="tof_interface_node" output="screen"/>
+
+    <node pkg="doly_hw_interfaces" exec="edge_interface_node" name="edge_interface_node" output="screen"/>
 </launch>
