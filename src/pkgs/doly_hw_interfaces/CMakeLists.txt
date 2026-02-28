@@ -28,11 +28,13 @@ target_include_directories(drive_interface_node PRIVATE
 )
 target_link_libraries(drive_interface_node
   ${geometry_msgs_TARGETS}
+  ${sensor_msgs_TARGETS}
   rclcpp::rclcpp
   doly_sdk::doly_sdk
   ros2_fmt_logger::ros2_fmt_logger
   fmt::fmt
   spdlog::spdlog
+  tf2::tf2
 )
 
 # Arm interface node
@@ -109,7 +111,6 @@ target_link_libraries(edge_interface_node
 install(TARGETS
   drive_interface_node
   arm_interface_node
-  imu_interface_node
   led_interface_node
   tof_interface_node
   edge_interface_node

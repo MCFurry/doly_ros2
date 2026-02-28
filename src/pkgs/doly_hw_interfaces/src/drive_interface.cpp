@@ -23,15 +23,40 @@ DriveInterface::DriveInterface(const rclcpp::NodeOptions & options)
   // get DriveControl version
   logger_.info("DriveControl Version:{:.3f}", DriveControl::getVersion());
 
-  // Register event listeners
+  // Read settings for IMU offsets
+  int8_t res = Helper::readSettings();
+  if (res < 0) {
+    logger_.error("Read settings failed with code: {}", res);
+    return;
+  }
+
+  int16_t gx, gy, gz, ax, ay, az;
+  res = Helper::getImuOffsets(gx, gy, gz, ax, ay, az);
+  if (res < 0) {
+    logger_.error("Get IMU offsets failed with code: {}", res);
+    return;
+  }
+
+  // Register drive event listeners
   DriveEvent::AddListenerOnError(&DriveInterface::onDriveErrorStatic);
   DriveEvent::AddListenerOnStateChange(&DriveInterface::onDriveStateChangeStatic);
 
-  // Initialize DriveControl
-  if (DriveControl::init() != 0) {
+  // Initialize DriveControl with IMU offsets
+  if (DriveControl::init(gx, gy, gz, ax, ay, az) != 0) {
     logger_.error("DriveControl init failed");
     return;
   }
+
+  // Register IMU event listeners (IMU is now owned by DriveControl)
+  ImuEvent::AddListenerUpdateEvent(&DriveInterface::onImuUpdateStatic);
+  ImuEvent::AddListenerGestureEvent(&DriveInterface::onImuGestureStatic);
+
+  // IMU publisher and timer
+  imu_publisher_ = this->create_publisher<sensor_msgs::msg::Imu>("imu_data", 10);
+  const double imu_freq = this->declare_parameter("imu_freq", 10.0);
+  imu_pub_timer_ = create_timer(
+    std::chrono::duration<double>{1.0 / imu_freq}, [this] { imuTimerCb(); });
+  current_imu_data_.header.frame_id = this->declare_parameter<std::string>("imu_frame_id", "imu");
 
   cmd_vel_subscriber_ = this->create_subscription<geometry_msgs::msg::TwistStamped>(
     "cmd_vel", 10,
@@ -49,6 +74,8 @@ void DriveInterface::cmdVelCallback(const geometry_msgs::msg::TwistStamped::Shar
   DriveControl::freeDrive(speedToMotorCommand(speed_right), false, speed_right >= 0.0);
 }
 
+void DriveInterface::imuTimerCb() { imu_publisher_->publish(current_imu_data_); }
+
 }  // namespace drive_interface
 
 int main(int argc, char ** argv)
@@ -63,6 +90,8 @@ int main(int argc, char ** argv)
   rclcpp::shutdown();
 
   // Cleanup
+  ImuEvent::RemoveListenerUpdateEvent(&drive_interface::DriveInterface::onImuUpdateStatic);
+  ImuEvent::RemoveListenerGestureEvent(&drive_interface::DriveInterface::onImuGestureStatic);
   DriveControl::dispose(true);  // dispose IMU as well
   DriveEvent::RemoveListenerOnError(&drive_interface::DriveInterface::onDriveErrorStatic);
   DriveEvent::RemoveListenerOnStateChange(
