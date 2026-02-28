@@ -64,10 +64,25 @@ target_link_libraries(imu_interface_node
   tf2::tf2
 )
 
+# Led interface node
+add_executable(led_interface_node src/led_interface.cpp)
+target_include_directories(led_interface_node PRIVATE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
+target_link_libraries(led_interface_node
+  ${std_msgs_TARGETS}
+  rclcpp::rclcpp
+  doly_sdk::doly_sdk
+  ros2_fmt_logger::ros2_fmt_logger
+  fmt::fmt
+  spdlog::spdlog
+)
+
 install(TARGETS
   drive_interface_node
   arm_interface_node
   imu_interface_node
+  led_interface_node
   DESTINATION lib/${PROJECT_NAME}
 )
 
