@@ -21,7 +21,7 @@ RUN /ros_entrypoint.sh colcon build
 # Stage 2: Minimal runtime image
 FROM ros:rolling-ros-core
 
-COPY --from=builder /ws/install /opt/dolly/rolling
+COPY --from=builder /ws/install /opt/doly/rolling
 # Also take latest build spdlog
 COPY --from=builder /usr/local/lib/libspdlog.so* /usr/local/lib/
 RUN ldconfig
@@ -33,7 +33,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
      && rm -rf /var/lib/apt/lists/*
 
 # Update bashrc such that the ros-environment is sourced when someone enters the container
-RUN echo 'source /opt/dolly/rolling/setup.bash' >> ~/.bashrc
+RUN echo 'source /opt/doly/rolling/setup.bash' >> ~/.bashrc
 
 COPY start.bash /start.bash
 RUN chmod +x /start.bash

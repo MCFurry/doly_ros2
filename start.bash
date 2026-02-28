@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source /opt/dolly/rolling/setup.bash
+source /opt/doly/rolling/setup.bash
 
 if [ "$RMW_IMPLEMENTATION" == "rmw_zenoh_cpp" ]; then
     unset ROS_AUTOMATIC_DISCOVERY_RANGE
