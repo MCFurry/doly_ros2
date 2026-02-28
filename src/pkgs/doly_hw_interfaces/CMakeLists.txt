@@ -17,6 +17,11 @@ find_package(std_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(fmt REQUIRED)
 find_package(doly_msgs REQUIRED)
+find_package(rclcpp_action REQUIRED)
+
+# Transitive dependencies of doly_sdk (SoundControl / TtsControl)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(ALSA REQUIRED alsa)
 
 include_directories(
   include
@@ -108,6 +113,25 @@ target_link_libraries(fan_interface_node
   spdlog::spdlog
 )
 
+# TTS interface node
+add_executable(tts_interface_node src/tts_interface.cpp)
+target_include_directories(tts_interface_node PRIVATE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
+target_link_libraries(tts_interface_node
+  ${doly_msgs_TARGETS}
+  rclcpp::rclcpp
+  rclcpp_action::rclcpp_action
+  doly_sdk::doly_sdk
+  ros2_fmt_logger::ros2_fmt_logger
+  fmt::fmt
+  spdlog::spdlog
+  ${ALSA_LIBRARIES}
+)
+# Allow unresolved symbols from prebuilt SDK shared libs (espeak-ng, piper_phonemize, onnxruntime)
+# These are resolved at runtime on the target platform
+target_link_options(tts_interface_node PRIVATE "LINKER:--allow-shlib-undefined")
+
 install(TARGETS
   drive_interface_node
   arm_interface_node
@@ -115,6 +139,7 @@ install(TARGETS
   tof_interface_node
   edge_interface_node
   fan_interface_node
+  tts_interface_node
   DESTINATION lib/${PROJECT_NAME}
 )
 

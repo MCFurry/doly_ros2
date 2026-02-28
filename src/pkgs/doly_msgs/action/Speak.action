@@ -1,0 +1,10 @@
+# Text to speak
+string text
+---
+# True if speech completed successfully
+bool success
+# Status message
+string message
+---
+# Current status feedback
+string status

@@ -10,6 +10,7 @@ find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "srv/SetFanSpeed.srv"
+  "action/Speak.action"
 )
 
 if(BUILD_TESTING)
