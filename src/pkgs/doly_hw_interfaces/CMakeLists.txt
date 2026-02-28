@@ -132,6 +132,20 @@ target_link_libraries(tts_interface_node
 # These are resolved at runtime on the target platform
 target_link_options(tts_interface_node PRIVATE "LINKER:--allow-shlib-undefined")
 
+# Touch interface node
+add_executable(touch_interface_node src/touch_interface.cpp)
+target_include_directories(touch_interface_node PRIVATE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
+target_link_libraries(touch_interface_node
+  ${doly_msgs_TARGETS}
+  rclcpp::rclcpp
+  doly_sdk::doly_sdk
+  ros2_fmt_logger::ros2_fmt_logger
+  fmt::fmt
+  spdlog::spdlog
+)
+
 install(TARGETS
   drive_interface_node
   arm_interface_node
@@ -140,6 +154,7 @@ install(TARGETS
   edge_interface_node
   fan_interface_node
   tts_interface_node
+  touch_interface_node
   DESTINATION lib/${PROJECT_NAME}
 )
 

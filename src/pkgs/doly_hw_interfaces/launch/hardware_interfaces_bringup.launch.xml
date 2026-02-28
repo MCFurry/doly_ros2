@@ -12,4 +12,6 @@
     <node pkg="doly_hw_interfaces" exec="fan_interface_node" name="fan_interface_node" output="screen"/>
 
     <node pkg="doly_hw_interfaces" exec="tts_interface_node" name="tts_interface_node" output="screen"/>
+
+    <node pkg="doly_hw_interfaces" exec="touch_interface_node" name="touch_interface_node" output="screen"/>
 </launch>
