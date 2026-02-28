@@ -51,21 +51,6 @@ target_link_libraries(arm_interface_node
   spdlog::spdlog
 )
 
-# Imu interface node
-add_executable(imu_interface_node src/imu_interface.cpp)
-target_include_directories(imu_interface_node PRIVATE
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-)
-target_link_libraries(imu_interface_node
-  ${sensor_msgs_TARGETS}
-  rclcpp::rclcpp
-  doly_sdk::doly_sdk
-  ros2_fmt_logger::ros2_fmt_logger
-  fmt::fmt
-  spdlog::spdlog
-  tf2::tf2
-)
-
 # Led interface node
 add_executable(led_interface_node src/led_interface.cpp)
 target_include_directories(led_interface_node PRIVATE
