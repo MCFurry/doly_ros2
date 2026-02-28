@@ -1,0 +1,7 @@
+# Fan speed as a percentage (0-100), -1 sets the fan to automatic mode
+int8 percentage
+---
+# True if the fan speed was set successfully
+bool success
+# Status message
+string message

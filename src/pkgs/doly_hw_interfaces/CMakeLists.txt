@@ -16,6 +16,7 @@ find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(fmt REQUIRED)
+find_package(doly_msgs REQUIRED)
 
 include_directories(
   include
@@ -93,12 +94,27 @@ target_link_libraries(edge_interface_node
   spdlog::spdlog
 )
 
+# Fan interface node
+add_executable(fan_interface_node src/fan_interface.cpp)
+target_include_directories(fan_interface_node PRIVATE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
+target_link_libraries(fan_interface_node
+  ${doly_msgs_TARGETS}
+  rclcpp::rclcpp
+  doly_sdk::doly_sdk
+  ros2_fmt_logger::ros2_fmt_logger
+  fmt::fmt
+  spdlog::spdlog
+)
+
 install(TARGETS
   drive_interface_node
   arm_interface_node
   led_interface_node
   tof_interface_node
   edge_interface_node
+  fan_interface_node
   DESTINATION lib/${PROJECT_NAME}
 )
 
