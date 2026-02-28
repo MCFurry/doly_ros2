@@ -4,4 +4,6 @@
     <node pkg="doly_hw_interfaces" exec="arm_interface_node" name="arm_interface_node" output="screen"/>
 
     <node pkg="doly_hw_interfaces" exec="led_interface_node" name="led_interface_node" output="screen"/>
+
+    <node pkg="doly_hw_interfaces" exec="tof_interface_node" name="tof_interface_node" output="screen"/>
 </launch>
