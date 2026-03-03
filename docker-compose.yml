@@ -11,4 +11,4 @@ services:
     environment:
       RMW_IMPLEMENTATION: rmw_zenoh_cpp
     volumes:
-      - ./settings.xml:/.doly/config/settings.xml
+      - /.doly:/.doly

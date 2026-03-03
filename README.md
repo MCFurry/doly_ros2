@@ -38,8 +38,10 @@ Reboot your system to apply group changes.
 
 ## Quick Start
 
-Make sure to copy `docker-compose.yml` and settings.xml to the Doly robot first.
-You might want to adjust some calibration values in settings.xml based on the values of your doly in /.doly/config/settings.xml.
+Make sure to copy `docker-compose.yml` to the Doly robot first.
+
+
+⚠️ **Important:** The complete /.doly folder is mounted in this docker container, to read configuration files and to load libraries that the SDK libs require. You might want to consider making a backup of your userdata in this folder
 
 ⚠️ **Important:** The Docker container requires privileged mode and root user access to communicate with the robot's hardware. Start the container with appropriate permissions and as root user!.
 

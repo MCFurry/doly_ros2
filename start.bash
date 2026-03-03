@@ -2,6 +2,9 @@
 
 source /opt/doly/rolling/setup.bash
 
+# Make sure the sdk libraries can find the local needed libs already installed on Doly
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/.doly/libs/piper/lib"
+
 if [ "$RMW_IMPLEMENTATION" == "rmw_zenoh_cpp" ]; then
     unset ROS_AUTOMATIC_DISCOVERY_RANGE
     # Start a zenohd in the background
