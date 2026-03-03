@@ -8,7 +8,7 @@ namespace drive_interface
 DriveInterface * DriveInterface::instance_ = nullptr;
 
 DriveInterface::DriveInterface(const rclcpp::NodeOptions & options)
-: rclcpp::Node("drive_interface", options), logger_(this->get_logger())
+: rclcpp::Node("drive_interface", options), imu_publisher_(this->create_publisher<sensor_msgs::msg::Imu>("imu_data", 10)), logger_(this->get_logger())
 {
   instance_ = this;
 
@@ -51,8 +51,7 @@ DriveInterface::DriveInterface(const rclcpp::NodeOptions & options)
   ImuEvent::AddListenerUpdateEvent(&DriveInterface::onImuUpdateStatic);
   ImuEvent::AddListenerGestureEvent(&DriveInterface::onImuGestureStatic);
 
-  // IMU publisher and timer
-  imu_publisher_ = this->create_publisher<sensor_msgs::msg::Imu>("imu_data", 10);
+  // IMU publish timer
   const double imu_freq = this->declare_parameter("imu_freq", 10.0);
   imu_pub_timer_ = create_timer(
     std::chrono::duration<double>{1.0 / imu_freq}, [this] { imuTimerCb(); });

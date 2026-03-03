@@ -8,7 +8,10 @@ namespace tof_interface
 TofInterface * TofInterface::instance_ = nullptr;
 
 TofInterface::TofInterface(const rclcpp::NodeOptions & options)
-: rclcpp::Node("tof_interface", options), logger_(this->get_logger())
+: rclcpp::Node("tof_interface", options),
+  logger_(this->get_logger()),
+  left_tof_publisher_(this->create_publisher<sensor_msgs::msg::Range>("tof/left", 10)),
+  right_tof_publisher_(this->create_publisher<sensor_msgs::msg::Range>("tof/right", 10))
 {
   instance_ = this;
 
@@ -32,10 +35,6 @@ TofInterface::TofInterface(const rclcpp::NodeOptions & options)
   // Register event listeners
   TofEvent::AddListenerOnProximityGesture(&TofInterface::onProximityGestureStatic);
   TofEvent::AddListenerOnProximityThreshold(&TofInterface::onProximityThresholdStatic);
-
-  // Create publishers
-  left_tof_publisher_ = this->create_publisher<sensor_msgs::msg::Range>("tof/left", 10);
-  right_tof_publisher_ = this->create_publisher<sensor_msgs::msg::Range>("tof/right", 10);
 
   // Create timer at configurable rate
   const double freq = this->declare_parameter("freq", 10.0);
