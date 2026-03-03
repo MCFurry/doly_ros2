@@ -35,14 +35,12 @@ private:
   void onProximityGesture(TofGesture left, TofGesture right)
   {
     logger_.debug(
-      "ToF gesture left={} right={}", static_cast<int>(left.type),
-      static_cast<int>(right.type));
+      "ToF gesture left={} right={}", static_cast<int>(left.type), static_cast<int>(right.type));
   }
 
   void onProximityThreshold(TofData left, TofData right)
   {
-    logger_.debug(
-      "ToF proximity left={}mm right={}mm", left.range_mm, right.range_mm);
+    logger_.debug("ToF proximity left={}mm right={}mm", left.range_mm, right.range_mm);
   }
 
   void publishTimerCb();

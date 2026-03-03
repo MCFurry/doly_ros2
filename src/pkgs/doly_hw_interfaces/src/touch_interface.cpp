@@ -5,7 +5,9 @@ namespace touch_interface
 TouchInterface * TouchInterface::instance_ = nullptr;
 
 TouchInterface::TouchInterface(const rclcpp::NodeOptions & options)
-: rclcpp::Node("touch_interface", options), logger_(this->get_logger()), touch_event_publisher_(this->create_publisher<doly_msgs::msg::TouchEvent>("touch/event", 10))
+: rclcpp::Node("touch_interface", options),
+  logger_(this->get_logger()),
+  touch_event_publisher_(this->create_publisher<doly_msgs::msg::TouchEvent>("touch/event", 10))
 {
   instance_ = this;
 

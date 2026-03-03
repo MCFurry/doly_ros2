@@ -1,6 +1,5 @@
 #pragma once
 #include <Helper.h>
-#include <string>
 #include <SoundControl.h>
 #include <SoundEvent.h>
 #include <TtsControl.h>
@@ -13,6 +12,7 @@
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp_action/rclcpp_action.hpp>
 #include <ros2_fmt_logger/ros2_fmt_logger.hpp>
+#include <string>
 
 namespace tts_interface
 {
@@ -20,7 +20,8 @@ namespace tts_interface
 using Speak = doly_msgs::action::Speak;
 using GoalHandleSpeak = rclcpp_action::ServerGoalHandle<Speak>;
 
-constexpr uint16_t SOUND_ID = 42; // Arbitrary ID for TTS playback, since we only handle one at a time
+constexpr uint16_t SOUND_ID =
+  42;  // Arbitrary ID for TTS playback, since we only handle one at a time
 
 class TtsInterface : public rclcpp::Node
 {
@@ -43,11 +44,9 @@ public:
 
 private:
   rclcpp_action::GoalResponse handleGoal(
-    const rclcpp_action::GoalUUID & uuid,
-    std::shared_ptr<const Speak::Goal> goal);
+    const rclcpp_action::GoalUUID & uuid, std::shared_ptr<const Speak::Goal> goal);
 
-  rclcpp_action::CancelResponse handleCancel(
-    const std::shared_ptr<GoalHandleSpeak> goal_handle);
+  rclcpp_action::CancelResponse handleCancel(const std::shared_ptr<GoalHandleSpeak> goal_handle);
 
   void handleAccepted(const std::shared_ptr<GoalHandleSpeak> goal_handle);
 

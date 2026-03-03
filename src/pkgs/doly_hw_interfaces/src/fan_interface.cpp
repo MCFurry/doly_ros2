@@ -25,10 +25,9 @@ FanInterface::FanInterface(const rclcpp::NodeOptions & options)
 
   // Create service for manual fan speed override
   set_fan_speed_service_ = this->create_service<doly_msgs::srv::SetFanSpeed>(
-    "set_fan_speed",
-    [this](
-      const std::shared_ptr<doly_msgs::srv::SetFanSpeed::Request> request,
-      std::shared_ptr<doly_msgs::srv::SetFanSpeed::Response> response) {
+    "set_fan_speed", [this](
+                       const std::shared_ptr<doly_msgs::srv::SetFanSpeed::Request> request,
+                       std::shared_ptr<doly_msgs::srv::SetFanSpeed::Response> response) {
       this->setFanSpeedCallback(request, response);
     });
 
@@ -44,17 +43,18 @@ void FanInterface::setFanSpeedCallback(
   } else if (request->percentage == AUTO_FAN_SPEED) {
     logger_.info("Setting fan to automatic mode");
     if (current_fan_speed_ >= 0) {
-        FanControl::dispose();
-        if (FanControl::init(true) < 0)
-        {
-            logger_.error("FanControl init failed");
-            response->success = false;
-            response->message = "FanControl init failed";
-            return;
-        }
+      FanControl::dispose();
+      if (FanControl::init(true) < 0) {
+        logger_.error("FanControl init failed");
+        response->success = false;
+        response->message = "FanControl init failed";
+        return;
+      }
     }
   } else if (request->percentage < AUTO_FAN_SPEED) {
-    logger_.warn("FanSpeed percentage {} is invalid, must be between 0-100 or -1 for auto", request->percentage);
+    logger_.warn(
+      "FanSpeed percentage {} is invalid, must be between 0-100 or -1 for auto",
+      request->percentage);
     response->success = false;
     response->message = "Invalid percentage value: " + std::to_string(request->percentage);
     return;
@@ -62,13 +62,12 @@ void FanInterface::setFanSpeedCallback(
 
   if (current_fan_speed_ < 0) {
     FanControl::dispose();
-    if (FanControl::init(false) < 0)
-	{
-	  logger_.error("FanControl init failed");
+    if (FanControl::init(false) < 0) {
+      logger_.error("FanControl init failed");
       response->success = false;
       response->message = "FanControl init failed";
       return;
-	}
+    }
   }
 
   int8_t res = FanControl::setFanSpeed(std::min(MAX_FAN_SPEED, request->percentage));

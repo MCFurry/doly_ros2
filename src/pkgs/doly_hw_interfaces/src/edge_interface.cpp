@@ -34,10 +34,10 @@ EdgeInterface::EdgeInterface(const rclcpp::NodeOptions & options)
   qos.transient_local();
 
   const std::map<SensorId, std::string> sensor_topics = {
-    {SensorId::FRONT_LEFT,  "edge/front_left"},
+    {SensorId::FRONT_LEFT, "edge/front_left"},
     {SensorId::FRONT_RIGHT, "edge/front_right"},
-    {SensorId::BACK_LEFT,   "edge/back_left"},
-    {SensorId::BACK_RIGHT,  "edge/back_right"},
+    {SensorId::BACK_LEFT, "edge/back_left"},
+    {SensorId::BACK_RIGHT, "edge/back_right"},
   };
 
   for (const auto & [id, topic] : sensor_topics) {
@@ -56,8 +56,7 @@ void EdgeInterface::onEdgeChange(std::vector<IrSensor> sensors)
 {
   for (const auto & sensor : sensors) {
     bool ground_detected = (sensor.state == GpioState::HIGH);
-    logger_.debug(
-      "Edge sensor id={} ground={}", static_cast<int>(sensor.id), ground_detected);
+    logger_.debug("Edge sensor id={} ground={}", static_cast<int>(sensor.id), ground_detected);
     publishSensorState(sensor.id, ground_detected);
   }
 }

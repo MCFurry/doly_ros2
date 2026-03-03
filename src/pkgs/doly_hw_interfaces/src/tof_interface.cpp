@@ -38,8 +38,8 @@ TofInterface::TofInterface(const rclcpp::NodeOptions & options)
 
   // Create timer at configurable rate
   const double freq = this->declare_parameter("freq", 10.0);
-  publish_timer_ = create_timer(
-    std::chrono::duration<double>{1.0 / freq}, [this] { publishTimerCb(); });
+  publish_timer_ =
+    create_timer(std::chrono::duration<double>{1.0 / freq}, [this] { publishTimerCb(); });
 
   logger_.info("TofInterface has been started.");
 }
@@ -53,8 +53,7 @@ void TofInterface::publishTimerCb()
   }
 
   for (const auto & data : sensors) {
-    auto msg = makeRangeMsg(
-      data.side == TofSide::LEFT ? "tof_left" : "tof_right", data.range_mm);
+    auto msg = makeRangeMsg(data.side == TofSide::LEFT ? "tof_left" : "tof_right", data.range_mm);
 
     if (data.side == TofSide::LEFT) {
       left_tof_publisher_->publish(msg);
@@ -72,7 +71,7 @@ sensor_msgs::msg::Range TofInterface::makeRangeMsg(const std::string & frame_id,
   msg.radiation_type = sensor_msgs::msg::Range::INFRARED;
   msg.field_of_view = 0.443;  // ~25 degrees in radians (VL6180 typical FoV)
   msg.min_range = 0.0;
-  msg.max_range = 0.255;  // VL6180 max range ~255 mm
+  msg.max_range = 0.255;                               // VL6180 max range ~255 mm
   msg.range = static_cast<float>(range_mm) / 1000.0f;  // convert mm to meters
   return msg;
 }
@@ -91,7 +90,8 @@ int main(int argc, char ** argv)
   rclcpp::shutdown();
 
   // Cleanup
-  TofEvent::RemoveListenerOnProximityGesture(&tof_interface::TofInterface::onProximityGestureStatic);
+  TofEvent::RemoveListenerOnProximityGesture(
+    &tof_interface::TofInterface::onProximityGestureStatic);
   TofEvent::RemoveListenerOnProximityThreshold(
     &tof_interface::TofInterface::onProximityThresholdStatic);
   TofControl::dispose();

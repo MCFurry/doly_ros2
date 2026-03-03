@@ -10,8 +10,8 @@
 namespace fan_interface
 {
 
-  constexpr int8_t AUTO_FAN_SPEED = -1;  // Special value to indicate automatic fan control
-  constexpr int8_t MAX_FAN_SPEED = 100;  // Maximum fan speed percentage
+constexpr int8_t AUTO_FAN_SPEED = -1;  // Special value to indicate automatic fan control
+constexpr int8_t MAX_FAN_SPEED = 100;  // Maximum fan speed percentage
 
 class FanInterface : public rclcpp::Node
 {

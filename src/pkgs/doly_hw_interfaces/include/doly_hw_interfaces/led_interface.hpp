@@ -39,7 +39,8 @@ private:
 
   void onLedError(uint16_t id, LedSide side, LedErrorType type)
   {
-    logger_.error("Led error id={} side={} type={}", id, static_cast<int>(side), static_cast<int>(type));
+    logger_.error(
+      "Led error id={} side={} type={}", id, static_cast<int>(side), static_cast<int>(type));
   }
 
   void leftColorCallback(const std_msgs::msg::ColorRGBA::SharedPtr msg);

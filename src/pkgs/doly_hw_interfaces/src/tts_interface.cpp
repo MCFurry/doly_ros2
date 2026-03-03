@@ -46,8 +46,7 @@ TtsInterface::TtsInterface(const rclcpp::NodeOptions & options)
   // Create action server
   using namespace std::placeholders;
   action_server_ = rclcpp_action::create_server<Speak>(
-    this, "speak",
-    std::bind(&TtsInterface::handleGoal, this, _1, _2),
+    this, "speak", std::bind(&TtsInterface::handleGoal, this, _1, _2),
     std::bind(&TtsInterface::handleCancel, this, _1),
     std::bind(&TtsInterface::handleAccepted, this, _1));
 
@@ -55,8 +54,7 @@ TtsInterface::TtsInterface(const rclcpp::NodeOptions & options)
 }
 
 rclcpp_action::GoalResponse TtsInterface::handleGoal(
-  const rclcpp_action::GoalUUID & /*uuid*/,
-  std::shared_ptr<const Speak::Goal> goal)
+  const rclcpp_action::GoalUUID & /*uuid*/, std::shared_ptr<const Speak::Goal> goal)
 {
   if (goal->text.empty()) {
     logger_.warn("Rejecting empty speech goal");
