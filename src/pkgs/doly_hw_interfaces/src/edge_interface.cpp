@@ -29,10 +29,6 @@ EdgeInterface::EdgeInterface(const rclcpp::NodeOptions & options)
     return;
   }
 
-  // Register event listeners
-  EdgeEvent::AddListenerOnChange(&EdgeInterface::onEdgeChangeStatic);
-  EdgeEvent::AddListenerOnGapDetect(&EdgeInterface::onGapDetectStatic);
-
   // Create transient_local publishers so late-joining subscribers get the last state
   rclcpp::QoS qos(1);
   qos.transient_local();
@@ -48,6 +44,10 @@ EdgeInterface::EdgeInterface(const rclcpp::NodeOptions & options)
     edge_publishers_[id] = this->create_publisher<std_msgs::msg::Bool>(topic, qos);
     publishSensorState(id, true);  // initial state: ground detected
   }
+
+  // Register event listeners after our publishers are created
+  EdgeEvent::AddListenerOnChange(&EdgeInterface::onEdgeChangeStatic);
+  EdgeEvent::AddListenerOnGapDetect(&EdgeInterface::onGapDetectStatic);
 
   logger_.info("EdgeInterface has been started.");
 }
