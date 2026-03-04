@@ -1,5 +1,8 @@
 #pragma once
 #include <Helper.h>
+// clang-format off
+#include <string>  // keep here: needed due to missing include in SoundControl.h
+// clang-format on
 #include <SoundControl.h>
 #include <SoundEvent.h>
 #include <TtsControl.h>
@@ -12,7 +15,6 @@
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp_action/rclcpp_action.hpp>
 #include <ros2_fmt_logger/ros2_fmt_logger.hpp>
-#include <string>
 
 namespace tts_interface
 {
