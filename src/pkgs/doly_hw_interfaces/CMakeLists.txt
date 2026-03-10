@@ -146,6 +146,21 @@ target_link_libraries(touch_interface_node
   spdlog::spdlog
 )
 
+# Eye interface node
+add_executable(eye_interface_node src/eye_interface.cpp)
+target_include_directories(eye_interface_node PRIVATE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
+target_link_libraries(eye_interface_node
+  ${doly_msgs_TARGETS}
+  rclcpp::rclcpp
+  rclcpp_action::rclcpp_action
+  doly_sdk::doly_sdk
+  ros2_fmt_logger::ros2_fmt_logger
+  fmt::fmt
+  spdlog::spdlog
+)
+
 install(TARGETS
   drive_interface_node
   arm_interface_node
@@ -155,6 +170,7 @@ install(TARGETS
   fan_interface_node
   tts_interface_node
   touch_interface_node
+  eye_interface_node
   DESTINATION lib/${PROJECT_NAME}
 )
 

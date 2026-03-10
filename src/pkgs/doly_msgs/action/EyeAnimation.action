@@ -1,0 +1,10 @@
+# Animation name (must match EyeExpressions in EyeControl.h)
+string animation
+---
+# True if the animation completed successfully
+bool success
+# Status message
+string message
+---
+# Current status feedback
+string status

@@ -12,6 +12,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/TouchEvent.msg"
   "srv/SetFanSpeed.srv"
   "action/Speak.action"
+  "action/EyeAnimation.action"
 )
 
 if(BUILD_TESTING)
