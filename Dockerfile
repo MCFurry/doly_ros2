@@ -38,6 +38,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Update bashrc such that the ros-environment is sourced when someone enters the container
 RUN echo 'source /opt/doly/rolling/setup.bash' >> ~/.bashrc
 
+# Copy assets to the container
+COPY assets /assets
+
 COPY start.bash /start.bash
 RUN chmod +x /start.bash
 CMD ["/start.bash"]

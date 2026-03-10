@@ -28,8 +28,8 @@ EyeInterface::EyeInterface(const rclcpp::NodeOptions & options)
   }
 
   // Start with default visuals on the eyes to indicate ROS stack has started
-  VContent visualL = VContent::getImage("/.doly/images/ROS2.png", true, true);
-  VContent visualR = VContent::getImage("/.doly/images/Doly.png", true, true);
+  VContent visualL = VContent::getImage("/assets/ROS2.png", true, true);
+  VContent visualR = VContent::getImage("/assets/Doly.png", true, true);
   if (!visualL.isReady() || !visualR.isReady())
     logger_.error("image load failed!");
   else
