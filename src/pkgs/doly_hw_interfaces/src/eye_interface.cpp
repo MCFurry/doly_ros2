@@ -28,14 +28,14 @@ EyeInterface::EyeInterface(const rclcpp::NodeOptions & options)
   }
 
   // Start with default visuals on the eyes to indicate ROS stack has started
-  VContent visualL = VContent::getImage("/assets/ROS2.png", true, true);
-  VContent visualR = VContent::getImage("/assets/Doly.png", true, true);
+  VContent visualL = VContent::getImage("/assets/images/ROS2.png", true, true);
+  VContent visualR = VContent::getImage("/assets/images/doly_glow.png", true, true);
   if (!visualL.isReady() || !visualR.isReady())
     logger_.error("image load failed!");
   else
   {
-    int retL = EyeControl::setBackground(&visualL, EyeSide::LEFT); // load content for left eyelid
-    int retR = EyeControl::setBackground(&visualR, EyeSide::RIGHT); // load content for right eyelid
+    int retL = EyeControl::setIris(&visualL, EyeSide::LEFT); // load content for left eyelid
+    int retR = EyeControl::setIris(&visualR, EyeSide::RIGHT); // load content for right eyelid
     if (retL < 0)
       logger_.error("Set left eye lid failed err:{}", retL);
     if (retR < 0)
