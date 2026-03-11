@@ -146,6 +146,17 @@ target_link_libraries(touch_interface_node
   spdlog::spdlog
 )
 
+# Battery status broadcaster node
+add_executable(battery_status_broadcaster_node src/battery_status_broadcaster.cpp)
+target_include_directories(battery_status_broadcaster_node PRIVATE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
+target_link_libraries(battery_status_broadcaster_node
+  ${sensor_msgs_TARGETS}
+  rclcpp::rclcpp
+  ros2_fmt_logger::ros2_fmt_logger
+)
+
 # Eye interface node
 add_executable(eye_interface_node src/eye_interface.cpp)
 target_include_directories(eye_interface_node PRIVATE
@@ -170,6 +181,7 @@ install(TARGETS
   fan_interface_node
   tts_interface_node
   touch_interface_node
+  battery_status_broadcaster_node
   eye_interface_node
   DESTINATION lib/${PROJECT_NAME}
 )

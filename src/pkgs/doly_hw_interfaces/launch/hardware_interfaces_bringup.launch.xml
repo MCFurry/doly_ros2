@@ -15,5 +15,7 @@
 
     <node pkg="doly_hw_interfaces" exec="touch_interface_node" name="touch_interface_node" output="screen"/>
 
+    <node pkg="doly_hw_interfaces" exec="battery_status_broadcaster_node" name="battery_status_broadcaster_node" output="screen"/>
+
     <node pkg="doly_hw_interfaces" exec="eye_interface_node" name="eye_interface_node" output="screen"/>
 </launch>
