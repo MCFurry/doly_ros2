@@ -11,6 +11,7 @@ find_package(rosidl_default_generators REQUIRED)
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/TouchEvent.msg"
   "srv/SetFanSpeed.srv"
+  "srv/SetEyeType.srv"
   "action/Speak.action"
   "action/EyeAnimation.action"
 )

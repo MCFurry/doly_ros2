@@ -1,0 +1,36 @@
+# Iris shape preset.
+uint8 IRIS_SHAPE_CLASSIC=0
+uint8 IRIS_SHAPE_MODERN=1
+uint8 IRIS_SHAPE_SPACE=2
+uint8 IRIS_SHAPE_ORBIT=3
+uint8 IRIS_SHAPE_GLOW=4
+uint8 IRIS_SHAPE_DIGI=5
+
+# Predefined iris/background colors.
+uint8 COLOR_BLACK=0
+uint8 COLOR_WHITE=1
+uint8 COLOR_GRAY=2
+uint8 COLOR_SALMON=3
+uint8 COLOR_RED=4
+uint8 COLOR_DARK_RED=5
+uint8 COLOR_PINK=6
+uint8 COLOR_ORANGE=7
+uint8 COLOR_GOLD=8
+uint8 COLOR_YELLOW=9
+uint8 COLOR_PURPLE=10
+uint8 COLOR_MAGENTA=11
+uint8 COLOR_LIME=12
+uint8 COLOR_GREEN=13
+uint8 COLOR_DARK_GREEN=14
+uint8 COLOR_CYAN=15
+uint8 COLOR_SKY_BLUE=16
+uint8 COLOR_BLUE=17
+uint8 COLOR_DARK_BLUE=18
+uint8 COLOR_BROWN=19
+
+uint8 iris_shape
+uint8 iris_color
+uint8 background_color
+---
+bool success
+string message

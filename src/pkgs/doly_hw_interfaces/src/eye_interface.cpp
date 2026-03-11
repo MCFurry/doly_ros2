@@ -1,6 +1,7 @@
 #include "doly_hw_interfaces/eye_interface.hpp"
 
 #include <functional>
+#include <string>
 #include <thread>
 
 namespace eye_interface
@@ -52,6 +53,13 @@ EyeInterface::EyeInterface(const rclcpp::NodeOptions & options)
     std::bind(&EyeInterface::handleGoal, this, _1, _2),
     std::bind(&EyeInterface::handleCancel, this, _1),
     std::bind(&EyeInterface::handleAccepted, this, _1));
+
+  set_eye_type_service_ = this->create_service<doly_msgs::srv::SetEyeType>(
+    "set_eye_type", [this](
+                      const std::shared_ptr<doly_msgs::srv::SetEyeType::Request> request,
+                      std::shared_ptr<doly_msgs::srv::SetEyeType::Response> response) {
+      this->setEyeTypeCallback(request, response);
+    });
 
   logger_.info("EyeInterface has been started.");
 }
@@ -131,6 +139,55 @@ void EyeInterface::execute(const std::shared_ptr<GoalHandleEyeAnimation> goal_ha
     goal_handle->abort(result);
     logger_.warn("Eye animation aborted: {}", animation);
   }
+}
+
+void EyeInterface::setEyeTypeCallback(
+  const std::shared_ptr<doly_msgs::srv::SetEyeType::Request> request,
+  std::shared_ptr<doly_msgs::srv::SetEyeType::Response> response)
+{
+  if (!isValidIrisShape(request->iris_shape)) {
+    response->success = false;
+    response->message = "Invalid iris_shape value: " + std::to_string(request->iris_shape);
+    logger_.warn("Rejected set_eye_type request with invalid iris_shape={}", request->iris_shape);
+    return;
+  }
+
+  if (!isValidColorCode(request->iris_color)) {
+    response->success = false;
+    response->message = "Invalid iris_color value: " + std::to_string(request->iris_color);
+    logger_.warn("Rejected set_eye_type request with invalid iris_color={}", request->iris_color);
+    return;
+  }
+
+  if (!isValidColorCode(request->background_color)) {
+    response->success = false;
+    response->message =
+      "Invalid background_color value: " + std::to_string(request->background_color);
+    logger_.warn(
+      "Rejected set_eye_type request with invalid background_color={}",
+      request->background_color);
+    return;
+  }
+
+  const auto iris_shape = static_cast<IrisShape>(request->iris_shape);
+  const auto iris_color = static_cast<ColorCode>(request->iris_color);
+  const auto background_color = static_cast<ColorCode>(request->background_color);
+
+  const int8_t result = EyeControl::setEyes(iris_shape, iris_color, background_color);
+  if (result < 0) {
+    response->success = false;
+    response->message = "EyeControl::setEyes failed with code " + std::to_string(result);
+    logger_.error(
+      "set_eye_type failed: shape={}, iris_color={}, background_color={}, code={}",
+      request->iris_shape, request->iris_color, request->background_color, result);
+    return;
+  }
+
+  response->success = true;
+  response->message = "Eye type updated";
+  logger_.info(
+    "Eye type updated: shape={}, iris_color={}, background_color={}",
+    request->iris_shape, request->iris_color, request->background_color);
 }
 
 void EyeInterface::onEyeStart(uint16_t id)
