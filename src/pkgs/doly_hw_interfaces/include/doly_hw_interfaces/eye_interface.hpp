@@ -48,20 +48,13 @@ public:
     }
   }
 
-  static bool isValidIrisShape(uint8_t iris_shape)
-  {
-    return iris_shape <= kMaxIrisShape;
-  }
+  static bool isValidIrisShape(uint8_t iris_shape) { return iris_shape <= kMaxIrisShape; }
 
-  static bool isValidColorCode(uint8_t color_code)
-  {
-    return color_code <= kMaxColorCode;
-  }
+  static bool isValidColorCode(uint8_t color_code) { return color_code <= kMaxColorCode; }
 
 private:
   rclcpp_action::GoalResponse handleGoal(
-    const rclcpp_action::GoalUUID & uuid,
-    std::shared_ptr<const EyeAnimation::Goal> goal);
+    const rclcpp_action::GoalUUID & uuid, std::shared_ptr<const EyeAnimation::Goal> goal);
 
   rclcpp_action::CancelResponse handleCancel(
     const std::shared_ptr<GoalHandleEyeAnimation> goal_handle);

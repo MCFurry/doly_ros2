@@ -33,14 +33,11 @@ EyeInterface::EyeInterface(const rclcpp::NodeOptions & options)
   VContent visualR = VContent::getImage("/assets/images/doly_glow.png", true, true);
   if (!visualL.isReady() || !visualR.isReady())
     logger_.error("image load failed!");
-  else
-  {
-    int retL = EyeControl::setIris(&visualL, EyeSide::LEFT); // load content for left eyelid
-    int retR = EyeControl::setIris(&visualR, EyeSide::RIGHT); // load content for right eyelid
-    if (retL < 0)
-      logger_.error("Set left eye lid failed err:{}", retL);
-    if (retR < 0)
-      logger_.error("Set right eye lid failed err:{}", retR);
+  else {
+    int retL = EyeControl::setIris(&visualL, EyeSide::LEFT);   // load content for left eyelid
+    int retR = EyeControl::setIris(&visualR, EyeSide::RIGHT);  // load content for right eyelid
+    if (retL < 0) logger_.error("Set left eye lid failed err:{}", retL);
+    if (retR < 0) logger_.error("Set right eye lid failed err:{}", retR);
   }
 
   EyeEvent::AddListenerOnStart(&EyeInterface::onEyeStartStatic);
@@ -49,8 +46,7 @@ EyeInterface::EyeInterface(const rclcpp::NodeOptions & options)
 
   using namespace std::placeholders;
   action_server_ = rclcpp_action::create_server<EyeAnimation>(
-    this, "set_eye_animation",
-    std::bind(&EyeInterface::handleGoal, this, _1, _2),
+    this, "set_eye_animation", std::bind(&EyeInterface::handleGoal, this, _1, _2),
     std::bind(&EyeInterface::handleCancel, this, _1),
     std::bind(&EyeInterface::handleAccepted, this, _1));
 
@@ -65,8 +61,7 @@ EyeInterface::EyeInterface(const rclcpp::NodeOptions & options)
 }
 
 rclcpp_action::GoalResponse EyeInterface::handleGoal(
-  const rclcpp_action::GoalUUID & /*uuid*/,
-  std::shared_ptr<const EyeAnimation::Goal> goal)
+  const rclcpp_action::GoalUUID & /*uuid*/, std::shared_ptr<const EyeAnimation::Goal> goal)
 {
   if (goal->animation.empty()) {
     logger_.warn("Rejecting empty eye animation goal");
@@ -164,8 +159,7 @@ void EyeInterface::setEyeTypeCallback(
     response->message =
       "Invalid background_color value: " + std::to_string(request->background_color);
     logger_.warn(
-      "Rejected set_eye_type request with invalid background_color={}",
-      request->background_color);
+      "Rejected set_eye_type request with invalid background_color={}", request->background_color);
     return;
   }
 
@@ -186,14 +180,11 @@ void EyeInterface::setEyeTypeCallback(
   response->success = true;
   response->message = "Eye type updated";
   logger_.info(
-    "Eye type updated: shape={}, iris_color={}, background_color={}",
-    request->iris_shape, request->iris_color, request->background_color);
+    "Eye type updated: shape={}, iris_color={}, background_color={}", request->iris_shape,
+    request->iris_color, request->background_color);
 }
 
-void EyeInterface::onEyeStart(uint16_t id)
-{
-  logger_.debug("Eye animation started id={}", id);
-}
+void EyeInterface::onEyeStart(uint16_t id) { logger_.debug("Eye animation started id={}", id); }
 
 void EyeInterface::onEyeComplete(uint16_t id)
 {

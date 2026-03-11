@@ -1,5 +1,3 @@
-#include <sensor_msgs/msg/battery_state.hpp>
-
 #include <algorithm>
 #include <chrono>
 #include <cmath>
@@ -8,6 +6,7 @@
 #include <memory>
 #include <rclcpp/rclcpp.hpp>
 #include <ros2_fmt_logger/ros2_fmt_logger.hpp>
+#include <sensor_msgs/msg/battery_state.hpp>
 #include <string>
 
 namespace battery_status_broadcaster
@@ -21,15 +20,16 @@ public:
   explicit BatteryStatusBroadcaster(const rclcpp::NodeOptions & options = rclcpp::NodeOptions{})
   : rclcpp::Node("battery_status_broadcaster", options), logger_(this->get_logger())
   {
-    current_path_ = this->declare_parameter<std::string>(
-      "current_path", "/sys/class/hwmon/hwmon1/curr1_input");
-    bus_voltage_path_ = this->declare_parameter<std::string>(
-      "bus_voltage_path", "/sys/class/hwmon/hwmon1/in1_input");
+    current_path_ =
+      this->declare_parameter<std::string>("current_path", "/sys/class/hwmon/hwmon1/curr1_input");
+    bus_voltage_path_ =
+      this->declare_parameter<std::string>("bus_voltage_path", "/sys/class/hwmon/hwmon1/in1_input");
     shunt_voltage_path_ = this->declare_parameter<std::string>(
       "shunt_voltage_path", "/sys/class/hwmon/hwmon1/in0_input");
 
     publisher_ = this->create_publisher<sensor_msgs::msg::BatteryState>("battery_status", 1);
-    timer_ = this->create_wall_timer(1s, std::bind(&BatteryStatusBroadcaster::publishBatteryState, this));
+    timer_ =
+      this->create_wall_timer(1s, std::bind(&BatteryStatusBroadcaster::publishBatteryState, this));
 
     logger_.info("BatteryStatusBroadcaster started");
   }
@@ -75,8 +75,7 @@ private:
       message.cell_voltage.clear();
 
       logger_.warn_throttle(
-        1s,
-        "Failed to read battery telemetry from sysfs paths: current=%s, bus=%s, shunt=%s",
+        1s, "Failed to read battery telemetry from sysfs paths: current=%s, bus=%s, shunt=%s",
         current_path_.c_str(), bus_voltage_path_.c_str(), shunt_voltage_path_.c_str());
 
       publisher_->publish(message);
@@ -94,9 +93,7 @@ private:
     message.voltage = static_cast<float>(bus_voltage_v);
     message.current = static_cast<float>(current_a);
     message.percentage = static_cast<float>(capacity_percent / 100.0);
-    message.cell_voltage = {
-      static_cast<float>(bus_voltage_v),
-      static_cast<float>(shunt_voltage_v)};
+    message.cell_voltage = {static_cast<float>(bus_voltage_v), static_cast<float>(shunt_voltage_v)};
 
     publisher_->publish(message);
   }
